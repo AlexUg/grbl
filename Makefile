@@ -30,7 +30,7 @@
 
 DEVICE     ?= atmega328p
 CLOCK      = 16000000
-PROGRAMMER ?= -c avrisp2 -P usb
+PROGRAMMER ?= -c arduino -P /dev/ttyACM0 -b 115200
 SOURCE    = main.c motion_control.c gcode.c spindle_control.c coolant_control.c serial.c \
              protocol.c stepper.c eeprom.c settings.c planner.c nuts_bolts.c limits.c jog.c\
              print.c probe.c report.c system.c
@@ -96,8 +96,8 @@ grbl.hex: $(BUILDDIR)/main.elf
 # EEPROM and add it to the "flash" target.
 
 # Targets for code debugging and analysis:
-disasm:	main.elf
-	avr-objdump -d $(BUILDDIR)/main.elf
+disasm:	$(BUILDDIR)/main.elf
+	avr-objdump -d -h -S $(BUILDDIR)/main.elf > $(BUILDDIR)/mail.lss
 
 cpp:
 	$(COMPILE) -E $(SOURCEDIR)/main.c
